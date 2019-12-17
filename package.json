@@ -5,7 +5,7 @@
   "main": "index.js",
   "directories": {
     "lib": "lib",
-    "test": "test"
+    "test": "mocha"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/S1mple133/WebWatch#readme",
   "dependencies": {
+    "mocha": "^6.2.2",
     "puppeteer": "^2.0.0",
     "request-promise": "^4.2.5",
+    "solc": "^0.4.25",
     "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.2.4"
   }

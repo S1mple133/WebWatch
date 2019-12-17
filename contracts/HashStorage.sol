@@ -1,5 +1,5 @@
-pragma experimental ABIEncoderV2;
 pragma solidity ^0.4.25;
+pragma experimental ABIEncoderV2;
 
 contract HashStorage {
     mapping(address => string[]) people;
