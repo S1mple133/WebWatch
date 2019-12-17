@@ -1,0 +1,29 @@
+{
+  "name": "webwatch",
+  "version": "1.0.0",
+  "description": "\"# WebWatch\"",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S1mple133/WebWatch.git"
+  },
+  "author": "s1mple133, aichinger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S1mple133/WebWatch/issues"
+  },
+  "homepage": "https://github.com/S1mple133/WebWatch#readme",
+  "dependencies": {
+    "puppeteer": "^2.0.0",
+    "request-promise": "^4.2.5",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "web3": "^1.2.4"
+  }
+}
