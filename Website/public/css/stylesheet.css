@@ -6,3 +6,9 @@
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
+@media only screen and (max-width: 1000px) {
+  .hash-text {
+    display: none;
+  }
+}

@@ -1,26 +1,26 @@
 extends layout
 block content
     h1.headline #{title}
-    div(class='table-responsive')
-        table(class='table')
-            thead(class='grey lighten-15')
+    table(class='table')
+        thead(class='grey lighten-15')
+            tr
+                th(scope='col') #
+                th(scope='col') Website
+                th(scope='col').hash-text Hash
+                th(scope='col') PDF
+                th(scope='col') HTML
+        tbody
+            - var index = 1
+            each website in websites
                 tr
-                    th(scope='col') #
-                    th(scope='col') Website
-                    th(scope='col') Hash
-                    th(scope='col') PDF
-                    th(scope='col') HTML
-            tbody
-                - var index = 1
-                each website in websites
-                    tr
-                        th #{index}
-                        td #{website.website}
-                        td #{website.hash}
-                        td
-                            a(href=website.pdf)
-                                button(type='button' class='btn btn-primary') PDF Download
-                        td
-                            a(href=website.html)
-                                button(type='button' class='btn btn-secondary') HTML Download
-                    - index = index +1
+                    th #{index}
+                    td #{website.website}
+                    td.hash-text
+                        div #{website.hash}
+                    td
+                        a(href=website.pdf)
+                            button(type='button' class='btn btn-primary') PDF Download
+                    td
+                        a(href=website.html)
+                            button(type='button' class='btn btn-secondary') HTML Download
+                - index = index +1

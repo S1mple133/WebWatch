@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
-
-var jsoninstring = '{"websites": [ {"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "google.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8", "html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"},{"website": "facebook.com","hash": "5fd924625f6ab16a19cc9807c7c506ae1813490e4ba675f843d5a10e0baacdb8","html": "https://duckduckgo.com","pdf": "https://duckduckgo.com"}]}';
+const ethlib = require('../WebWatch/lib/ethlib');
 
 app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
-    res.render('saved',{title: 'Saved Websites',websites: JSON.parse(jsoninstring).websites});
+    ethlib.getHashesOfPersonJSON("0x9720E8EA7aD42c8d3CE8671b7271E6E7Ef41695b", function(jsoninstring) {
+        res.render('saved',{title: 'Show Websites',websites: JSON.parse(jsoninstring).websites});
+    });
 });
 
 const server = app.listen(80, () => {
