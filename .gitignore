@@ -106,5 +106,5 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# Stores Saved Websites
-WebWatch/data
+# Stored Websites
+WebWatch/data/*
