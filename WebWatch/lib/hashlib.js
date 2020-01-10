@@ -2,8 +2,9 @@ const fs = require('fs');
 const crypto = require('crypto');
 const rp = require('request-promise');
 const puppeteer = require('puppeteer');
+const ethlib = require('./ethlib');
 var express = require('express');
-const dir_root = "./data";
+const dir_root = "/Users/niklas/Github/WebWatch/WebWatch/data";
 const html_file_name = "index.html";
 const pdf_file_name = "index.pdf";
 const Web3 = require("web3");
@@ -12,14 +13,14 @@ const web3 = new Web3();
         /*
            Callback with html code passed as argument
          */
-        function getHtmlCodeOfLink(link, cb) {
-            rp(link)
-                .then(function (html) {
-                    cb(html);
-                })
-                .catch(function (err) {
-                    cb(undefined);
-                });
+    function getHtmlCodeOfLink(link, cb) {
+        rp(link)
+            .then(function (html) {
+                cb(html);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     }
 
     /*
@@ -50,20 +51,15 @@ const web3 = new Web3();
         return hash.read();
     }
 
-    function saveHashToEth(hash, ethAddress) {
-
-    }
-
-    function saveUrlData(url, cb) {
+    function saveUrlData(address, privateKey, url, cb) {
         getHtmlCodeOfLink(url, function (html) {
             hash = getHashOfCode(html);
             const folder = dir_root + '/' + hash + '/';
 
             if (fs.existsSync(folder)) {
-                console.log("Hash already Exists !");
+                //console.log("Hash already Exists !");
                 return;
             }
-
             fs.mkdirSync(folder);
 
             (async () => {
@@ -79,9 +75,9 @@ const web3 = new Web3();
                 if (err) throw err;
             });
 
+            ethlib.saveHashToEth(address,privateKey,hash);
             cb(hash);
         });
     }
 
 exports.saveUrlData = saveUrlData;
-//liste

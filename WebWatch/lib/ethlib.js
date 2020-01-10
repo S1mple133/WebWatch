@@ -35,18 +35,18 @@ async function getHashesOfPerson(address, cb) {
 }
 async function getHashesOfPersonJSON(address, cb) {
     hashes = await contract.methods.getHashes(address).call();
-    var json = new Object();
-    json.websites = new Object();
 
-    for(var i = 0; i  < hashes.length();i++) {
-        json.websites[i] = new Object();
-        json.websites[i].website = "example.com";
-        json.websites[i].hash = hashes[i];
-        json.websites[i].html = "https://duckduckgo.com";           
-        json.websites[i].pdf = "https://duckduckgo.com";
+    var websites = {};
+    for(var i = 0; i  < hashes.length;i++) {
+        websites[i] = 
+        {
+            website: "example.com",
+            hash: hashes[i],
+            html: hashes[i] + "/index.html",
+            pdf:  hashes[i] + "/index.pdf"
+        };
     }
-
-    cb(JSON.stringify(json));
+    cb(websites);
 }
 
 //saveHashToEth("0x9720E8EA7aD42c8d3CE8671b7271E6E7Ef41695b",
