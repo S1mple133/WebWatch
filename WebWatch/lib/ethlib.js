@@ -1,7 +1,12 @@
 const Web3 = require("web3");
+const hashlib = require('./hashlib');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const { interface } = require('../compile');
-const CONTRACT_ADDR = "0xe0536342c32217DB992FCCfc68dADCeA4E2181b1"; // Deployed contract address
+const fs = require('fs');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
+
+const CONTRACT_ADDR = "0x31D99e2e5b49538669742330A8586f86E6Cc11C4"; // Deployed contract address
 
 const provider = new HDWalletProvider(
     // Account mnemonics
@@ -26,7 +31,9 @@ async function saveHashToEth(address, privateKey, hash) {
     const signPromise = await web3.eth.accounts.signTransaction(tx, privateKey);
     //console.log(signPromise);
     const sentTx = await web3.eth.sendSignedTransaction(signPromise.rawTransaction)
-        .then(receipt => console.log("Transaction receipt: ", receipt))  .catch(err => console.error(err));
+        //.then(receipt => console.log("Transaction receipt: ", receipt))  .catch(err => console.error(err))
+        .then(receipt => console.log("added: "+ hash))  .catch(err => console.error(err))
+        ;
 }
 
 async function getHashesOfPerson(address, cb) {
@@ -40,11 +47,11 @@ async function getHashesOfPersonJSON(address, cb) {
     for(var i = 0; i  < hashes.length;i++) {
         websites[i] = 
         {
-            website: "example.com",
+            website: await readFile("../WebWatch/data/"+hashes[i]+"/"+ hashlib.meta_file_name),
             hash: hashes[i],
             html: hashes[i] + "/index.html",
             pdf:  hashes[i] + "/index.pdf"
-        };
+        }; 
     }
     cb(websites);
 }

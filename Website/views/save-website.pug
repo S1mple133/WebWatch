@@ -1,0 +1,12 @@
+extends layout
+block content
+    h1.headline #{title}
+    form(action='save' method='post')
+        p address:
+        input(type='text' name='address' value='0x9720E8EA7aD42c8d3CE8671b7271E6E7Ef41695b')
+        p private key:
+        input(type='text' name='privateKey' value='E018D766E4A1ED365EB8EB9B6F8D0DDE12BF4FCE1107FB88DD8F34197D3F9970')
+        p website:
+        input(type='text' name='url' value='')
+        br
+        input(type='submit' value='Submit')

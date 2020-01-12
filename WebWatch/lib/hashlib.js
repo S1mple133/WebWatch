@@ -7,6 +7,7 @@ var express = require('express');
 const dir_root = "/Users/niklas/Github/WebWatch/WebWatch/data";
 const html_file_name = "index.html";
 const pdf_file_name = "index.pdf";
+const meta_file_name = "metafile";
 const Web3 = require("web3");
 const web3 = new Web3();
 
@@ -74,10 +75,15 @@ const web3 = new Web3();
             fs.writeFile(folder + html_file_name, html, (err) => {
                 if (err) throw err;
             });
-
+            fs.writeFile(folder + meta_file_name, url, (err) => {
+                if (err) throw err;
+            });
+            
             ethlib.saveHashToEth(address,privateKey,hash);
+            //console.log("added: "+ url);
             cb(hash);
         });
     }
 
 exports.saveUrlData = saveUrlData;
+exports.meta_file_name = meta_file_name;
