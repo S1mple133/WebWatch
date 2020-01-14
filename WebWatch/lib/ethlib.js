@@ -6,7 +6,7 @@ const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
-const CONTRACT_ADDR = "0x31D99e2e5b49538669742330A8586f86E6Cc11C4"; // Deployed contract address
+const CONTRACT_ADDR = "0xA1f0f0Cf1d6E9261ED57E4E705d13953d39809B6"; // Deployed contract address
 
 const provider = new HDWalletProvider(
     // Account mnemonics
