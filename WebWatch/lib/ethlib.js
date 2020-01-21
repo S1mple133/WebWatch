@@ -6,7 +6,7 @@ const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
-const CONTRACT_ADDR = "0xA1f0f0Cf1d6E9261ED57E4E705d13953d39809B6"; // Deployed contract address
+const CONTRACT_ADDR = "0xB580437CF4D90639a3077C2C7651D844b975B23a"; // Deployed contract address
 
 const provider = new HDWalletProvider(
     // Account mnemonics
@@ -31,8 +31,8 @@ async function saveHashToEth(address, privateKey, hash) {
     const signPromise = await web3.eth.accounts.signTransaction(tx, privateKey);
     //console.log(signPromise);
     const sentTx = await web3.eth.sendSignedTransaction(signPromise.rawTransaction)
-        //.then(receipt => console.log("Transaction receipt: ", receipt))  .catch(err => console.error(err))
-        .then(receipt => console.log("added: "+ hash))  .catch(err => console.error(err))
+        .then(receipt => console.log("Transaction receipt: ", receipt))  .catch(err => console.error(err))
+        //.then(receipt => console.log("added: "+ hash))  .catch(err => console.error(err))
         ;
 }
 

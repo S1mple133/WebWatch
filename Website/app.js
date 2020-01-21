@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.render('index',{title: 'Home'});
 });
 
-app.post('/save', function(req, res){
+app.post('/save', (req, res) => {
     hashlib.saveUrlData(req.body.address, req.body.privateKey, req.body.url, function (hash) {
         //console.log(hash);
     });
