@@ -107,4 +107,7 @@ dist
 .vscode-test
 
 # Stored Websites
-WebWatch/data/*
+data/*
+
+#macos
+.DS_Store
