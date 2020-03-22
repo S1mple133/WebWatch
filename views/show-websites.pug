@@ -1,0 +1,124 @@
+doctype html
+head
+  // Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  link(rel='icon' href='img/favicon.png' type='image/png')
+  title Web Watch
+  // Bootstrap CSS
+  link(rel='stylesheet' href='css/bootstrap.css')
+  link(rel='stylesheet' href='vendors/linericon/style.css')
+  link(rel='stylesheet' href='css/font-awesome.min.css')
+  link(rel='stylesheet' href='vendors/owl-carousel/owl.carousel.min.css')
+  link(rel='stylesheet' href='vendors/lightbox/simpleLightbox.css')
+  link(rel='stylesheet' href='vendors/nice-select/css/nice-select.css')
+  link(rel='stylesheet' href='vendors/animate-css/animate.css')
+  // main css
+  link(rel='stylesheet' href='css/style.css')
+  link(rel='stylesheet' href='css/responsive.css')
+// ================Header Menu Area =================
+header.header_area
+  .main_menu
+    nav.navbar.navbar-expand-lg.navbar-light
+      .container.box_1620
+        // Brand and toggle get grouped for better mobile display
+        // <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt="WebWatch"></a>
+        h2.nav-header WebWatch
+        button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        // Collect the nav links, forms, and other content for toggling
+        #navbarSupportedContent.collapse.navbar-collapse.offset
+          ul.nav.navbar-nav.menu_nav.justify-content-center
+            li.nav-item.active
+              a.nav-link(href='/') Home
+            li.nav-item
+              a.nav-link(href='/about-us') About
+            li.nav-item
+              a.nav-link(href='/show-websites') Show Websites
+            li.nav-item
+              a.nav-link(href='/save-website') Save Website
+            li.nav-item
+              a.nav-link(href='/contact') Contact
+          ul.nav.navbar-nav.navbar-right
+            li.nav-item
+              a.tickets_btn(href='/login') Log in
+// ================Header Menu Area =================
+// ================Home Banner Area =================
+section.banner_area
+  .banner_inner.d-flex.align-items-center
+    .overlay.bg-parallax(data-stellar-ratio='0.9' data-stellar-vertical-offset='0' data-background='')
+    .container
+      .banner_content.text-center
+        h2 Show Websites
+        .page_link
+          a(href='/index') Home
+          a(href='/show-websites') Show Websites
+// ================End Home Banner Area =================
+// ================Table Area =================
+.whole-wrap
+  .container
+    .section-top-border
+      h3.mb-30.title_color Websites
+      table(class='table')
+        thead(class='grey lighten-15')
+            tr
+                th(scope='col') #
+                th(scope='col') Website
+                th(scope='col').hash-text Hash
+                th(scope='col') PDF
+                th(scope='col') HTML
+        tbody
+            - var index = 1
+            each website in websites
+                tr
+                    th #{index}
+                    td #{website.website}
+                    td.hash-text
+                        div #{website.hash}
+                    td
+                        a(href=website.pdf)
+                            button(type='button' class='btn btn-primary') PDF Download
+                    td
+                        a(href=website.html download)
+                            button(type='button' class='btn btn-secondary') HTML Download
+                - index = index +1
+// ================End Table Area =================
+// ================Footer Area =================
+footer.footer_area.p_120
+  .container
+    .row.footer_inner
+      .col-lg-10.col-sm-8
+        aside.f_widget.news_widget
+          .f_title
+            h3 About Us
+          p
+            | Addres: Limesstrasse 12, 4060 Leonding
+            br
+            | Email: me@example.com
+          p
+            | Copyright &copy;
+            script.
+              document.write(new Date().getFullYear());
+            |  All rights reserved | This template is made with 
+            i.fa.fa-heart-o(aria-hidden='true')
+            |  by 
+            a(href='https://colorlib.com' target='_blank') Colorlib
+// ================End Footer Area =================
+// Optional JavaScript
+// jQuery first, then Popper.js, then Bootstrap JS
+script(src='js/jquery-3.2.1.min.js')
+script(src='js/popper.js')
+script(src='js/bootstrap.min.js')
+script(src='js/stellar.js')
+script(src='vendors/lightbox/simpleLightbox.min.js')
+script(src='vendors/nice-select/js/jquery.nice-select.min.js')
+script(src='vendors/isotope/imagesloaded.pkgd.min.js')
+script(src='vendors/isotope/isotope-min.js')
+script(src='vendors/owl-carousel/owl.carousel.min.js')
+script(src='js/jquery.ajaxchimp.min.js')
+script(src='js/mail-script.js')
+script(src='vendors/counter-up/jquery.waypoints.min.js')
+script(src='vendors/counter-up/jquery.counterup.min.js')
+script(src='js/theme.js')
