@@ -110,4 +110,4 @@ dist
 data/*
 
 #macos
-.DS_Store
+*/.DS_Store

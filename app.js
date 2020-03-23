@@ -1,15 +1,27 @@
 const express = require('express');
 const app = express();
-const ethlib = require('./lib/ethlib');
-const hashlib = require('./lib/hashlib');
-const authentication = require('./lib/authentication');
+const path = require('path');
+const ethlib = require(path.resolve(__dirname, 'lib', 'ethlib'));
+const hashlib = require(path.resolve(__dirname, 'lib', 'hashlib'));
+const authentication = require(path.resolve(__dirname, 'lib', 'authentication'));
+const helmet = require('helmet');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var csrf = require('csurf');
+
+//var csrfProtection = csrf({ cookie: true })
+//var parseForm = bodyParser.urlencoded({ extended: false })
 
 app.set('view engine', 'pug');
+app.set('json escape', true); // XSS
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/data'));
-//app.use(express.static(__dirname + '/views'));
+app.use(express.static(path.resolve(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, 'data')));
+app.use(helmet());
+//app.use(cookieParser());
+//app.use(csrfProtection);
 
 // STATIC WEBSITE
 app.get('/about-us', (req, res) => {
@@ -30,16 +42,14 @@ app.get('/elements', (req, res) => {
 
 
 // WEB SERVER
-// TODO: Update for new template
 app.get('/show-websites', (req, res) => {
-    //res.sendFile(__dirname + "/views/show-websites.html");
     ethlib.getHashesOfPersonJSON("0x9720E8EA7aD42c8d3CE8671b7271E6E7Ef41695b", function(websites) {
         res.render('show-websites',{title: 'Show Websites',websites: websites});
     });
 });
 
-app.get('/save-website', (req, res) => {
-    res.render('save-website');
+app.get('/save-website', /*csrfProtection,*/ (req, res) => {
+    res.render('save-website', { csrfToken: req.csrfToken() });
 });
 
 app.get('/website-saved', (req, res) => {
@@ -47,7 +57,7 @@ app.get('/website-saved', (req, res) => {
 });
 
 // TODO: LOGIN (USE OWN ETH ACCOUNT WITH MONEY TRANSFERED FROM USER)
-app.post('/save', (req, res) => {
+app.post('/save', /*parseForm,csrfProtection,*/ (req, res) => {
     hashlib.saveUrlData("0x9720E8EA7aD42c8d3CE8671b7271E6E7Ef41695b", "E018D766E4A1ED365EB8EB9B6F8D0DDE12BF4FCE1107FB88DD8F34197D3F9970", req.body.url, function (hash) {
         //console.log(hash);
     });
@@ -55,16 +65,18 @@ app.post('/save', (req, res) => {
 });
 
 // LOGIN / REGISTRATION
-app.get('/sign-up', (req, res) => {
+app.get('/sign-up', /*csrfProtection,*/ (req, res) => {
+    //res.render('sign-up', { csrfToken: req.csrfToken() });
     res.render('sign-up');
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', /*csrfProtection,*/ (req, res) => {
+    //res.render('login', { csrfToken: req.csrfToken() });
     res.render('login');
 });
 
-app.post('/sign-up', async (req, res) => {
-    result = await authentication.signup(req);
+app.post('/sign-up', /*parseForm, csrfProtection,*/ async (req, res) => {
+    result = await authentication.signup(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.repeat_password);
 
     if(result === authentication.RESULT_CODES.OK) 
         return res.render('sign-up',{success: result});
@@ -72,8 +84,13 @@ app.post('/sign-up', async (req, res) => {
         return res.render('sign-up',{failure: result});
 });
 
-app.post('/login', (req, res) => {
-    
+app.post('/login', /*parseForm, csrfProtection,*/ async (req, res) => {
+    result = await authentication.login(req);
+
+    if(result === authentication.RESULT_CODES.OK) 
+        return res.render('login',{success: result});
+    else
+        return res.render('login',{failure: result});
 });
 
 
