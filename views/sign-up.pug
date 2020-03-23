@@ -3,7 +3,34 @@ html(lang='en')
   head
     include inc/header.pug
   body
-    include inc/navbar.pug
+    // ================Header Menu Area =================
+    header.header_area
+        .main_menu
+            nav.navbar.navbar-expand-lg.navbar-light
+                .container.box_1620
+                    h2.nav-header WebWatch
+                    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    .collapse.navbar-collapse.offset#navbarSupportedContent
+                        ul.nav.navbar-nav.menu_nav.justify-content-center
+                            li.nav-item.active
+                                a.nav-link(href='/') Home
+                            li.nav-item
+                                a.nav-link(href='/about-us') About
+                            li.nav-item
+                                a.nav-link(href='/show-websites') Show Websites
+                            li.nav-item
+                                a.nav-link(href='/save-website') Save Website
+                            li.nav-item
+                                a.nav-link(href='/contact') Contact
+                            ul.nav.navbar-nav.navbar-right
+                        if username != undefined
+                            a.tickets_btn(href='/logout') Log Out
+                        else
+                            a.tickets_btn(href='/login') Login
+            // ================Header Menu Area =================
     // ================Home Banner Area =================
     section.banner_area
       .banner_inner.d-flex.align-items-center
@@ -50,7 +77,7 @@ html(lang='en')
                   | Repeat Password
                   br
                   input.single-input(type='password' name='repeat_password' placeholder='password' onfocus="this.placeholder = 'password'" onblur="this.placeholder = 'password'" required='')
-            include inc/csrf.pug
             input.main_btn.success-border(type='submit' value='Sign Up')
+            a(href="/login" style="margin-left:30px;") Already have an account? Login
     // ================End Sign Up Form Area =================
     include inc/footer.pug

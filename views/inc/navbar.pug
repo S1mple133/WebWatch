@@ -21,5 +21,8 @@ header.header_area
                         li.nav-item
                             a.nav-link(href='/contact') Contact
                         ul.nav.navbar-nav.navbar-right
-                    a.tickets_btn(href='/sign-up') Sign Up
+                    if username != undefined
+                        a.tickets_btn(href='/logout') Log Out
+                    else
+                        a.tickets_btn(href='/sign-up') Sign Up
         // ================Header Menu Area =================

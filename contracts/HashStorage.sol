@@ -2,15 +2,15 @@ pragma solidity ^0.4.25;
 pragma experimental ABIEncoderV2;
 
 contract HashStorage {
-    mapping(address => string[]) people;
+    mapping(string => string[]) people;
 
-    function addHash(string hash) public {
-        people[msg.sender].push(hash);
+    function addHash(string hash, string email) public {
+        people[email].push(hash);
     }
 
     // SHOULD HASHES BE AVAILABLE TO EVERYONE
     // -- Call + owner parameter (Or should they only be availabe to owner - Transaction)
-    function getHashes(address owner) public returns(string[]) {
+    function getHashes(string owner) public returns(string[]) {
         return people[owner];
     }
 }

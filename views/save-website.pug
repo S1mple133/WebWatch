@@ -24,11 +24,10 @@ html(lang='en')
               .chart_img
                 img.img-fluid(src='img/banner/home-left-1.png' alt='')
             .col-lg-6
-              form(action='/save' method='POST')
+              form(action='/save-website' method='POST')
                 h3 Save a Snapshot
                 p URL:
                 input.single-input(type='url' name='url' placeholder='https://example.com' onfocus="this.placeholder = ''" onblur="this.placeholder = 'https://example.com'" required='')
-                include inc/csrf.pug
                 input.main_btn.success-border(type='submit' href='#' value='Submit')
     // ================End Made Life Area =================
     include inc/footer.pug

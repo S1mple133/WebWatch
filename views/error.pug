@@ -10,29 +10,18 @@ html(lang='en')
         .overlay.bg-parallax(data-stellar-ratio='0.9' data-stellar-vertical-offset='0' data-background)
         .container
           .banner_content.text-center
-            h2 Login
+            h2 Error
             .page_link
               a(href='/index') Home
-              a(href='/login') Login
+              a(href='/login') Error
     // ================End Home Banner Area =================
     include inc/notification.pug
     // ================Login Form Area =================
     section.made_life_area.made_white.p_120
       .container
-        .row.made_life_text
-          .row
-            form(action='/login' method='POST')
-              h3 Login
-              p
-                | Email
-                br
-                input.single-input(type='email' name='email' placeholder='name@example.com' onfocus='this.placeholder = \'name@example.com\'' onblur='this.placeholder = \'name@example.com\'' required)
-              br
-              p
-                | Password
-                br
-                input.single-input(type='password' name='password' placeholder='asdfasdfas' onfocus='this.placeholder = \'asdfasdfas\'' onblur='this.placeholder = \'asdfasdfas\'' required)
-              input.main_btn.success-border(type='submit' value='Login')
+        .made_life_text
+          h3 Error!
+          h6 An error popped up! Contact an administrator.
     // ================End Login Form Area =================
     include inc/footer.pug
 
