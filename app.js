@@ -8,6 +8,8 @@ const helmet = require('helmet');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var csrf = require('csurf');
+var session = require('client-sessions');
+const url = require('url');
 
 //var csrfProtection = csrf({ cookie: true })
 //var parseForm = bodyParser.urlencoded({ extended: false })
@@ -20,6 +22,14 @@ app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(express.static(path.resolve(__dirname, 'data')));
 app.use(helmet());
+app.use(cookieParser());
+app.use(session({
+    cookieName: 'session',
+    secret: '$2b$10$SJqhsrRHLEV0cnf3ufZsSObpmrRQzvi4v/lw8/O0EJ4Uv/XhOdYuW',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000,
+  }));
+
 //app.use(cookieParser());
 //app.use(csrfProtection);
 
@@ -29,7 +39,11 @@ app.get('/about-us', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('index');
+    if(req.query.success) {
+        res.render('index', {success: "Successfully logged in!"});
+    }else {
+        res.render('index');
+     }
 });
 
 app.get('/contact', (req, res) => {
@@ -49,7 +63,7 @@ app.get('/show-websites', (req, res) => {
 });
 
 app.get('/save-website', /*csrfProtection,*/ (req, res) => {
-    res.render('save-website', { csrfToken: req.csrfToken() });
+    res.render('save-website', { /*csrfToken: req.csrfToken()*/ });
 });
 
 app.get('/website-saved', (req, res) => {
@@ -87,8 +101,13 @@ app.post('/sign-up', /*parseForm, csrfProtection,*/ async (req, res) => {
 app.post('/login', /*parseForm, csrfProtection,*/ async (req, res) => {
     result = await authentication.login(req);
 
-    if(result === authentication.RESULT_CODES.OK) 
-        return res.render('login',{success: result});
+    if(result == authentication.RESULT_CODES.OK) 
+        res.redirect(url.format({
+            pathname:"/",
+            query: {
+               "success": "true"
+             }
+          }));
     else
         return res.render('login',{failure: result});
 });

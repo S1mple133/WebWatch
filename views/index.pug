@@ -3,7 +3,12 @@ html(lang='en')
   head
     include inc/header.pug
   body
-    include inc/navbar.pug
+    if success
+      .div(style="position:absolute;width:100%;top:80px;")
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success}
+          button.close(type='button' data-dismiss='alert' aria-label='Close')
+            span(aria-hidden='true') &times;
     // ================Home Banner Area =================
     section.home_banner_area
       .banner_inner
@@ -22,6 +27,7 @@ html(lang='en')
               .home_left_img
                 img.img-fluid(src='img/banner/home-left-1.png' alt)
     // ================End Home Banner Area =================
+    include inc/navbar.pug
     // ================Work Area =================
     section.work_area.p_120
       .container
