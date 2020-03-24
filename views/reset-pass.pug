@@ -7,37 +7,32 @@ html(lang='en')
     // ================Home Banner Area =================
     section.banner_area
       .banner_inner.d-flex.align-items-center
-        .overlay.bg-parallax(data-stellar-ratio='0.9' data-stellar-vertical-offset='0' data-background)
+        .overlay.bg-parallax(data-stellar-ratio='0.9' data-stellar-vertical-offset='0' data-background='')
         .container
           .banner_content.text-center
-            h2 Login
+            h2 Reset Password
             .page_link
               a(href='/index') Home
-              a(href='/login') Login
+              a(href='/save-website') Reset Password
     // ================End Home Banner Area =================
     include inc/notification.pug
-    // ================Login Form Area =================
+    // ================Made Life Area =================
     section.made_life_area.made_white.p_120
       .container
-        .row.made_life_text
-          .row
-            form(action='/login' method='POST')
-              h3 Login
-              p
-                | Email
-                br
-                input.single-input(type='email' name='email' placeholder='name@example.com' onfocus='this.placeholder = \'name@example.com\'' onblur='this.placeholder = \'name@example.com\'' required)
-              br
-              p
-                | Password
-                br
-                input.single-input(type='password' name='password' placeholder='asdfasdfas' onfocus='this.placeholder = \'asdfasdfas\'' onblur='this.placeholder = \'asdfasdfas\'' required)
-              input.main_btn.success-border(type='submit' value='Login')
-              a(href="/reset-pass" style="margin-left:30px;") Forgot your password?
-
-    // ================End Login Form Area =================
+        .made_life_inner
+          .row.made_life_text
+            .col-lg-6
+              .chart_img
+                img.img-fluid(src='img/banner/home-left-1.png' alt='')
+            .col-lg-6
+              form(action='/reset-pass' method='POST')
+                h3 Reset your password
+                p Email:
+                input.single-input(type='email' name='email' placeholder='me@example.com' onfocus="this.placeholder = 'me@example.com'" onblur="this.placeholder = 'https://example.com'" required='')
+                input.main_btn.success-border(type='submit' href='#' value='Submit')
+    // ================End Made Life Area =================
     include inc/footer.pug
-
+    
     script(src='js/jquery-3.2.1.min.js')
     script(src='js/popper.js')
     script(src='js/bootstrap.min.js')

@@ -47,8 +47,17 @@ app.get('/', (req, res) => {
     else if(req.query.logout) {
         res.render('index', {success: "Successfully logged out!", username: getUsername(req)});
     }
+    else if(req.query.verified) {
+        res.render('index', {success: "Successfully verified email!", username: getUsername(req)});
+    }
+    else if(req.query.verify_error) {
+        res.render('index', {failure: "Could not verify email!", username: getUsername(req)});
+    }
     else if(req.query.website_saved) {
         res.render('index', {success: "Successfully saved website!", username: getUsername(req)});
+    }
+    else if(req.query.reset_mail_sent){
+        res.render('index', {success: "Check your inbox!", username: getUsername(req)});
     }
     else {
         res.render('index', {username: getUsername(req)});
@@ -111,7 +120,8 @@ app.post('/sign-up', async (req, res) => {
                                          req.body.last_name,
                                          req.body.email,
                                          req.body.password,
-                                         req.body.repeat_password);
+                                         req.body.repeat_password,
+                                         req.headers.host);
 
     if(result === authentication.RESULT_CODES.OK) {
         return res.redirect("/?signup=true");
@@ -138,8 +148,38 @@ app.get('/logout', (req, res) => {
     res.redirect("/?logout=true");
 });
 
-app.get('/error', (req, res) => {
-    res.render('error');
+app.get('/verify', async (req, res) => {
+    if(req.query.uid === undefined || req.query.token === undefined)
+        throw new Error("Request error! Missing uid or token.");
+    
+    response = await authentication.verify(req.query.uid, req.query.token);
+
+    if(response === authentication.RESULT_CODES.OK)
+        res.redirect('/?verified=true');
+    else
+        res.redirect('/?verify_error=true');
+});
+
+app.get('/reset-pass', async (res) => {
+    return res.render('reset-pass');
+});
+
+app.post('/reset-pass', async (req, res) => {
+    if(req.body.email === undefined) {
+        res.render('reset-pass', {failure: "No email inserted!"});
+        return;
+    }
+
+    response = await authentication.sendResetPasswordMail(req.body.email, req.headers.host);
+
+    if(response === authentication.RESULT_CODES.OK)
+        res.redirect('/?reset_mail_sent=true');
+    else
+        res.render('reset-pass', {failure: "Could not reset password!"});
+});
+
+app.get('/new-password', (req, res)  => {
+    return res.render('new-password');
 });
 
 app.use(function (err, req, res, next) {
@@ -147,7 +187,11 @@ app.use(function (err, req, res, next) {
     next(err);
 });
 
-const server = app.listen(9000, () => {
+app.get('/error', (req, res) => {
+    res.render('error');
+});
+
+const server = app.listen(80, () => {
     console.log(`Express running → PORT ${server.address().port}`);
 });
   

@@ -7,7 +7,21 @@ CREATE TABLE IF NOT EXISTS users (
 	firstname VARCHAR(30) NOT NULL,
 	lastname VARCHAR(30) NOT NULL,
 	email VARCHAR(50),
-	password VARCHAR(64)
+	password VARCHAR(64),
+	verified BOOLEAN default 0,
+	uid VARCHAR(37)
+);
+
+CREATE TABLE IF NOT EXISTS unverified_users (
+	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	token VARCHAR(64),
+	uid VARCHAR(37)
+);
+
+CREATE TABLE IF NOT EXISTS reset_pass (
+	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	token VARCHAR(64),
+	uid VARCHAR(37)
 );
 
 INSERT INTO users (firstname, lastname, email,password) values()

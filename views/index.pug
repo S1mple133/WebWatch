@@ -9,6 +9,12 @@ html(lang='en')
           | #{success}
           button.close(type='button' data-dismiss='alert' aria-label='Close')
             span(aria-hidden='true') &times;
+    if failure
+      .div(style="position:absolute;width:100%;top:80px;")
+        .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+          | #{failure}
+          button.close(type='button' data-dismiss='alert' aria-label='Close')
+            span(aria-hidden='true') &times;
     // ================Home Banner Area =================
     section.home_banner_area
       .banner_inner
