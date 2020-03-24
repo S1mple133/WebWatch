@@ -8,8 +8,6 @@ const authentication = require(path.resolve(__dirname, 'lib', 'authentication'))
 const helmet = require('helmet');
 var cookieParser = require('cookie-parser');
 var session = require('client-sessions');
-var https = require('https');
-const fs = require('fs');
 
 app.set('view engine', 'pug');
 app.set('json escape', true);
@@ -110,10 +108,10 @@ app.get('/login', (req, res) => {
 
 app.post('/sign-up', async (req, res) => {
     result = await authentication.signup(req.body.first_name,
-        req.body.last_name,
-        req.body.email,
-        req.body.password,
-        req.body.repeat_password);
+                                         req.body.last_name,
+                                         req.body.email,
+                                         req.body.password,
+                                         req.body.repeat_password);
 
     if(result === authentication.RESULT_CODES.OK) {
         return res.redirect("/?signup=true");
@@ -149,24 +147,7 @@ app.use(function (err, req, res, next) {
     next(err);
 });
 
-/*const server = app.listen(80, () => {
+const server = app.listen(9000, () => {
     console.log(`Express running → PORT ${server.address().port}`);
-});*/
-
-// Https redirect
-http_redirect.get('*', function(req, res) {  
-    res.redirect('https://' + req.headers.host + req.url);
-});
-
-http_redirect.listen(80, () => {
-    console.log(`Https Redirect server running → PORT 80`);
-});
-
-https.createServer({
-    key: fs.readFileSync(path.resolve(__dirname, 'cert/key.pem')),
-    cert: fs.readFileSync(path.resolve(__dirname, 'cert/cert.pem'))
-}, app)
-.listen(443, function () {
-    console.log(`Express running → PORT 443`);
 });
   

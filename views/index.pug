@@ -21,8 +21,8 @@ html(lang='en')
                   br
                   | for you
                 p WebWatch uses blockchain-technologies to take snapshots of websites and store them safely. The snapshots can then be accessed at any time.
-                a.banner_btn(href='#') Store Website
-                a.banner_btn2(href='#') Saved Websites
+                a.banner_btn(href='/show-websites') Show Websites
+                a.banner_btn2(href='/save-website') Save Website
             .col-lg-7
               .home_left_img
                 img.img-fluid(src='img/banner/home-left-1.png' alt)
@@ -41,19 +41,19 @@ html(lang='en')
           .col-lg-4
             .work_item
               i.lnr.lnr-screen
-              a(href='#')
+              a(href='/save-website')
                 h4 Create a Snapshot
               p By creating a snapshot, you store a PDF and the HTML code of the actual state of the website on our servers.
           .col-lg-4
             .work_item
               i.lnr.lnr-code
-              a(href='#')
+              a(href='/blockchain')
                 h4 Hack-Proof Technology
               p By using the Ethereum blockchain, the identity of a stored website can not be compromised. Back-ups also add an extra layer of security.
           .col-lg-4
             .work_item
               i.lnr.lnr-clock
-              a(href='#')
+              a(href='/')
                 h4 24/7 Available
               p Our website is available 24/7, which means that your stored websites can be downloaded at any time from any PC.
     // ================End Work Area =================
@@ -107,7 +107,7 @@ html(lang='en')
         .impress_inner
           h2 Got Impressed to our features?
           p If you want to store the contents of a website safely, you can count on us!.
-          a.banner_btn2(href='#') Register
+          a.banner_btn2(href='/sign-up') Register
           
     include inc/footer.pug
     script(src='js/jquery-3.2.1.min.js')
