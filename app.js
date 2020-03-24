@@ -56,6 +56,9 @@ app.get('/', (req, res) => {
     else if(req.query.website_saved) {
         res.render('index', {success: "Successfully saved website!", username: getUsername(req)});
     }
+    else if(req.query.reset_pass) {
+        res.render('index', {success: "Successfully reset your password! You can now log in.", username: getUsername(req)});
+    }
     else if(req.query.reset_mail_sent){
         res.render('index', {success: "Check your inbox!", username: getUsername(req)});
     }
@@ -160,7 +163,7 @@ app.get('/verify', async (req, res) => {
         res.redirect('/?verify_error=true');
 });
 
-app.get('/reset-pass', async (res) => {
+app.get('/reset-pass', (req, res) => {
     return res.render('reset-pass');
 });
 
@@ -179,7 +182,22 @@ app.post('/reset-pass', async (req, res) => {
 });
 
 app.get('/new-password', (req, res)  => {
-    return res.render('new-password');
+    return res.render('new-password', {token : req.query.token, uid: req.query.uid});
+});
+
+app.post('/new-password', async (req, res)  => {
+    if(req.body.token === undefined || req.body.uid === undefined 
+        || req.body.password === undefined || req.body.verify_password === undefined) {
+        res.render('new-password', {failure: "Cannot change password!"});
+        return;
+    }
+
+    response = await authentication.resetPassword(req.body.token, req.body.uid, req.body.password, req.body.verify_password );
+
+    if(response === authentication.RESULT_CODES.OK)
+        res.redirect('/?reset_pass=true');
+    else
+        res.render('new-password', {failure: response, token : req.body.token, uid: req.body.uid});
 });
 
 app.use(function (err, req, res, next) {
