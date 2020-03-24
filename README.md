@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Web Watch
 ## Description
 This project should give people the opportunity to store snapshots of websites at a given time.
@@ -63,3 +64,6 @@ We will have meetings where we discuss a new feature which we then implement tog
     
 #### addressing changes
 As mentioned in the aproach we will have meetings in form of a in person conversation, a call of some kind or via chat. After we discussed how we will implement certain changes we than use visual studio code live share to work together on the same change or we will decide who will implement the change. After the change is finished the member/members who worked on the change will then proceed to push the code to github.
+=======
+# WebWatch
+>>>>>>> 95e227fba2dc3257b9f339356a034dea32050b7d
