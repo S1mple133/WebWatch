@@ -8,6 +8,8 @@ const authentication = require(path.resolve(__dirname, 'lib', 'authentication'))
 const helmet = require('helmet');
 var cookieParser = require('cookie-parser');
 var session = require('client-sessions');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 app.set('view engine', 'pug');
 app.set('json escape', true);
@@ -24,13 +26,23 @@ app.use(session({
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 
 function getUsername(req) {
-    if(req.session.firstname === undefined)
+    if(req.user.firstname === undefined)
         return undefined;
 
-    return "Hello, " + req.session.firstname;
+    return "Hello, " + req.user.firstname;
 }
+
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated())
+      return next();
+    res.redirect("/login?not_authenticated=true");
+  }
 
 // STATIC WEBSITE
 app.get('/about-us', (req, res) => {
@@ -77,29 +89,19 @@ app.get('/elements', (req, res) => {
 
 
 // WEB SERVER
-app.get('/show-websites', async (req, res, next) => {
-    if(!req.session.email){
-        res.redirect("/login?not_authenticated=true");
-        return;
-    }
-
-    websites = await ethlib.getHashesOfPersonJSON(req.session.email);
+app.get('/show-websites', isAuthenticated, async (req, res, next) => {
+    websites = await ethlib.getHashesOfPersonJSON(req.user.email);
 
     res.render('show-websites',{title: 'Show Websites',websites: websites, username: getUsername(req)});
 });
 
-app.get('/save-website', (req, res, next) => {
-    if(!req.session.email){
-        res.redirect("/login?not_authenticated=true");
-        return;
-    }
-
+app.get('/save-website', isAuthenticated, (req, res, next) => {
     res.render('save-website', { username: getUsername(req) });
 });
 
 // TODO: LOGIN (USE OWN ETH ACCOUNT WITH MONEY TRANSFERED FROM USER)
 app.post('/save-website', async (req, res) => {
-    hash = await hashlib.saveUrlData(req.body.url, req.session.email);
+    hash = await hashlib.saveUrlData(req.body.url, req.user.email);
 
     return res.redirect("/?website_saved=true");
 });
@@ -133,7 +135,15 @@ app.post('/sign-up', async (req, res) => {
     return res.render('sign-up',{failure: result});
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login', passport.authenticate('local', {
+        successRedirect: '/',
+        failureFlash: true
+    }), function(req, res, info){
+        console.log(info);
+        res.render('/');
+    });
+
+    /*async (req, res) => {
     result = await authentication.login(req);
 
     if(result == authentication.RESULT_CODES.OK) {
@@ -141,13 +151,11 @@ app.post('/login', async (req, res) => {
     }
 
     return res.render('login',{failure: result});
-});
+
+});*/
 
 app.get('/logout', (req, res) => {
-    req.session.email = undefined;
-    req.session.firstname = undefined;
-    req.session.lastname = undefined;
-
+    req.logout();
     res.redirect("/?logout=true");
 });
 
