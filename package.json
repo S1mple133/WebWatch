@@ -1,20 +1,17 @@
 {
-  "name": "webwatch",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "name": "passport-auth",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon app.js"
+    "start": "npx nodemon ./bin/www"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",
     "client-sessions": "^0.8.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "helmet": "^3.21.3",
     "mocha": "^6.2.2",
     "mysql": "^2.18.1",
@@ -26,6 +23,6 @@
     "request-promise": "^4.2.5",
     "solc": "^0.4.25",
     "truffle-hdwallet-provider": "^1.0.17",
-    "web3": "^1.2.4"
+    "web3": "^1.2.6"
   }
 }

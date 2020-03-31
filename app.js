@@ -1,136 +1,91 @@
-const express = require('express');
-const app = express();
-const http_redirect = express();
-const path = require('path');
-const ethlib = require('./lib/ethlib');
-const hashlib = require('./lib/hashlib');
-const authentication = require('./lib/authentication');
-const helmet = require('helmet');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
 var cookieParser = require('cookie-parser');
-var session = require('client-sessions');
+var logger = require('morgan');
 var passport = require('passport');
-var flash = require('connect-flash');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require("express-session");
+var bodyParser = require("body-parser");
 
+var indexRouter = require('./routes/index');
+var loginRouter = require('./routes/login');
+var aboutUsRouter = require('./routes/about-us');
+var contactRouter = require('./routes/contact');
+var elementsRouter = require('./routes/elements');
+var errorRouter = require('./routes/error');
+var logoutRouter = require('./routes/logout');
+var newPasswordRouter = require('./routes/new-password');
+var resetPasswordRouter = require('./routes/reset-password');
+var saveWebsiteRouter = require('./routes/save-website');
+var showWebsitesRouter = require('./routes/show-websites');
+var signupRouter = require('./routes/signup');
+var verifyRouter = require('./routes/verify');
+
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.set('json escape', true);
 
-app.use(express.urlencoded({extended: true}));
+app.use(logger('dev'));
 app.use(express.json());
-app.use(express.static(path.resolve(__dirname, 'public')));
-app.use(express.static(path.resolve(__dirname, 'data')));
-app.use(helmet());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-    cookieName: 'session',
-    secret: '$2b$10$SJqhsrRHLEV0cnf3ufZsSObpmrRQzvi4v/lw8/O0EJ4Uv/XhOdYuW',
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
-}));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session(
+  {secret: "asd",
+  name: "asd",
+  proxy: true,
+  resave: true,
+  saveUninitialized: true}
+  ));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
+app.use('/', indexRouter);
+app.use('/login', loginRouter);
+app.use('/about-us', aboutUsRouter);
+app.use('/contact', contactRouter);
+app.use('/elements', elementsRouter);
+app.use('/error', errorRouter);
+app.use('/logout', logoutRouter);
+app.use('/new-password', newPasswordRouter);
+app.use('/reset-password', resetPasswordRouter);
+app.use('/save-website', saveWebsiteRouter);
+app.use('/show-websites', showWebsitesRouter);
+app.use('/signup', signupRouter);
+app.use('/verify', verifyRouter);
 
-// STATIC WEBSITE
-app.get('/about-us', (req, res) => {
-    res.render('about-us', {username: getUsername(req)});
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-app.get('/', (req, res) => {
-    res.render('index', {success: req.flash('success')[0], failure: req.flash('failure')[0], username: getUsername(req) });
+app.use(function(err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-app.get('/contact', (req, res) => {
-    res.render('contact', {username: getUsername(req)});
+passport.serializeUser(function(user, done) {
+  done(null, user);
 });
 
-app.get('/elements', (req, res) => {
-    res.render('elements', {username: getUsername(req)});
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
 
-
-// WEB SERVER
-app.get('/show-websites', isAuthenticated, async (req, res, next) => {
-    res.render('show-websites', {
-        title: 'Show Websites',
-        websites: (await ethlib.getHashesOfPersonJSON(req.user.uid)),
-        username: getUsername(req)
-    });
-});
-
-app.get('/save-website', isAuthenticated, (req, res, next) => {
-    res.render('save-website', { username: getUsername(req) });
-});
-
-
-app.post('/save-website', async (req, res) => {
-    hash = await hashlib.saveUrlData(req.body.url, req.user.uid);
-    req.flash('success', 'Website successfully saved!');
-    return res.redirect("/");
-});
-
-app.get('/sign-up', (req, res) => {
-    res.render('sign-up', { username: getUsername(req), failure: req.flash('failure')[0] });
-});
-
-app.get('/login', (req, res) => {
-    res.render('login', { username: getUsername(req), failure: req.flash('failure')[0] });
-});
-
-app.post('/sign-up', authentication.signup);
-
-app.post('/login', passport.authenticate('local', 
-{ 
-    successRedirect: '/',
-    failureRedirect: '/login'
-}));
-
-app.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success', 'Successfully logged out!');
-    res.redirect("/");
-});
-
-app.get('/verify', authentication.verify);
-
-app.get('/reset-pass', (req, res) => {
-    return res.render('reset-pass');
-});
-
-app.post('/reset-pass', authentication.sendResetPasswordMail);
-
-app.get('/new-password', (req, res)  => {
-    return res.render('new-password', {token : req.query.token, uid: req.query.uid});
-});
-
-app.post('/new-password', authentication.resetPassword);
-
-app.use(function (err, req, res, next) {
-    if(err) {
-        res.redirect("/error");
-        console.log(err);
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    if(username == "user@abc.com" && password == "pass") {
+      return done(null, {username: username} );
+    }else {
+      return done(null, false);
     }
-});
+  }
+));
 
-app.get('/error', (req, res) => {
-    res.render('error');
-});
-
-const server = app.listen(80, () => {
-    console.log(`Express running → PORT ${server.address().port}`);
-});
-  
-function getUsername(req) {
-    if(req.user === undefined || req.user.firstname === undefined)
-        return undefined;
-
-    return "Hello, " + req.user.firstname;
-}
-
-function isAuthenticated(req, res, next) {
-    if (req.isAuthenticated())
-      return next();
-
-    req.flash('failure', 'Not authenticated!');
-    res.redirect("/login");
-}
+module.exports = app;
