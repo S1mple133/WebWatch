@@ -7,6 +7,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require("express-session");
 var bodyParser = require("body-parser");
+var flash = require("connect-flash");
 
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
@@ -35,8 +36,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session(
-  {secret: "asd",
-  name: "asd",
+  {secret: "AuRpOSYTFsb1D4YVdONR",
+  name: "session",
   proxy: true,
   resave: true,
   saveUninitialized: true}
@@ -44,8 +45,10 @@ app.use(session(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 app.use('/', indexRouter);
+app.use('/index', indexRouter);
 app.use('/login', loginRouter);
 app.use('/about-us', aboutUsRouter);
 app.use('/contact', contactRouter);
@@ -66,6 +69,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  console.log(err);
   res.status(err.status || 500);
   res.render('error');
 });
