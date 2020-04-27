@@ -8,6 +8,7 @@ This project should give people the opportunity to store snapshots of websites a
 * [How to Use WebWatch](https://github.com/S1mple133/WebWatch#how-to-use-webwatch)
 * [Project Summary](https://github.com/S1mple133/WebWatch#project-summary)
 * [Project Methodology](https://github.com/S1mple133/WebWatch#project-methodology)
+* [Hash Validation](https://github.com/S1mple133/WebWatch#hash-validation)
 
 ## Project Information
 Organization: HTL Leonding  
@@ -79,3 +80,15 @@ We will have meetings where we discuss new features, which we then implement tog
     
 #### Addressing changes
 As mentioned in the aproach, we will have online meetings, a call of some kind or via chat. After we discussed how we will implement certain changes, we use visual studio code live share to work together on the same change or we will decide who will implement the change. After the change is finished the member/members who worked on the change will then proceed to push the code to github.
+
+## Hash Validation
+
+
+![](github_content/img/validation.png "Hash Validation")
+
+Red – User sends request to save website from URL
+Yellow – Node App sends request to TCP Hash Verification Server App to verify HASH
+Green – Send Request to Hash Verification Clients to calculate HASH
+Cyan – Replies with calculated HASH
+Blue – Replies with HASH with the most frequent HASH
+Node Hash compares his own hash with the received one and adds it to the blockchain if they are equal
