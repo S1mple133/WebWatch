@@ -86,9 +86,9 @@ As mentioned in the aproach, we will have online meetings, a call of some kind o
 
 ![](github_content/img/validation.png "Hash Validation")
 
-Red – User sends request to save website from URL<br/>
-Yellow – Node App sends request to TCP Hash Verification Server App to verify HASH<br/>
-Green – Send Request to Hash Verification Clients to calculate HASH<br/>
-Cyan – Replies with calculated HASH<br/>
-Blue – Replies with HASH with the most frequent HASH<br/>
-Node Hash compares his own hash with the received one and adds it to the blockchain if they are equal<br/>
+Red – User sends the request to store website from URL to the Node Application<br/>
+Yellow – Node App then sends a request to TCP Hash Verification Server (HVS) to verify the HASH<br/>
+Green – HVS Send Request to Hash Verification Clients (HVC) to calculate HASH<br/>
+Cyan – HVC reply with the calculated HASH<br/>
+Blue – HVS sends the most frequent HASH back to the Node Application<br/>
+Node App compares his own hash with the received one and adds it to the blockchain if they are equal.<br/>
