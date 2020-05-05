@@ -8,6 +8,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require("express-session");
 var bodyParser = require("body-parser");
 var flash = require("connect-flash");
+var db = require('./lib/db');
+var bcrypt = require('bcrypt-nodejs');
 
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
@@ -53,7 +55,6 @@ app.use('/login', loginRouter);
 app.use('/about-us', aboutUsRouter);
 app.use('/contact', contactRouter);
 app.use('/elements', elementsRouter);
-app.use('/error', errorRouter);
 app.use('/logout', logoutRouter);
 app.use('/new-password', newPasswordRouter);
 app.use('/reset-password', resetPasswordRouter);
@@ -61,9 +62,11 @@ app.use('/save-website', saveWebsiteRouter);
 app.use('/show-websites', showWebsitesRouter);
 app.use('/signup', signupRouter);
 app.use('/verify', verifyRouter);
+app.use('/error', errorRouter);
 
 app.use(function(req, res, next) {
-  next(createError(404));
+  //next(createError(404));
+  res.redirect("/");
 });
 
 app.use(function(err, req, res, next) {
@@ -74,22 +77,32 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
+passport.serializeUser(function(user, done){
+  done(null, user.uid);
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(async function(id, done){
+  let res = await db.query("SELECT * FROM users WHERE uid = ? AND verified=true", id);
+  done(null, res[0]);
 });
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    if(username == "user@abc.com" && password == "pass") {
-      return done(null, {username: username} );
-    }else {
-      return done(null, false);
-    }
+passport.use('local', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true //passback entire req to call back
+} , async function (req, email, password, done){
+  try {
+      let res = await db.query("SELECT * FROM users WHERE email = ? AND verified=1", email);
+
+      if(res.length > 0 && bcrypt.compareSync(password, res[0].password)) {
+          return done(null, res[0]);
+      }
+  } catch(e){
+      console.log(e);
   }
-));
+
+  return done(null, false);
+})
+);
 
 module.exports = app;

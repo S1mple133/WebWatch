@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../lib/user');
+var ethlib = require('../lib/ethlib');
 
 router.get('/', user.isAuthenticated, async (req, res, next) => {
     res.render('show-websites', {
