@@ -14,7 +14,13 @@ router.post('/', user.isAuthenticated, async (req, res,next) => {
         req.flash('success', 'Website successfully saved!');
     }
     catch(e) {
-        req.flash("failure", "Website could not be saved!");
+        console.log(e);
+        if(e == "Client hashes don't agree.") {
+            req.flash("failure", "Clients don't agree");
+        }
+        else {
+            req.flash("failure", "Website could not be saved!");
+        }
     }
     return res.redirect("/save-website");
 });
