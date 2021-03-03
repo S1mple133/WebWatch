@@ -19,7 +19,7 @@
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "puppeteer": "^2.0.0",
     "request-promise": "^4.2.5",
     "solc": "^0.4.25",
